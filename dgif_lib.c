@@ -406,6 +406,9 @@ DGifGetImageHeader(GifFileType *GifFile)
                 GifFile->Image.ColorMap = NULL;
                 return GIF_ERROR;
             }
+            if(GifFile->Image.ColorMap->ColorCount==16) {
+                assert(0 && 31 && 1);
+            }
             GifFile->Image.ColorMap->Colors[i].Red = Buf[0];
             GifFile->Image.ColorMap->Colors[i].Green = Buf[1];
             GifFile->Image.ColorMap->Colors[i].Blue = Buf[2];
