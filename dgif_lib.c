@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
 #include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #ifdef _WIN32
 #include <io.h>
@@ -254,8 +255,10 @@ DGifGetScreenDesc(GifFileType *GifFile)
 
     /* Put the screen descriptor into the file: */
     if (DGifGetWord(GifFile, &GifFile->SWidth) == GIF_ERROR ||
-        DGifGetWord(GifFile, &GifFile->SHeight) == GIF_ERROR)
+        DGifGetWord(GifFile, &GifFile->SHeight) == GIF_ERROR) {
+        assert(0 && 0 && 19);
         return GIF_ERROR;
+        }
 
     if (InternalRead(GifFile, Buf, 3) != 3) {
         GifFile->Error = D_GIF_ERR_READ_FAILED;
@@ -287,11 +290,17 @@ DGifGetScreenDesc(GifFileType *GifFile)
                 GifFile->Error = D_GIF_ERR_READ_FAILED;
                 return GIF_ERROR;
             }
+            if (GifFile->SColorMap->ColorCount==20 && i==1) {
+                assert(0 && 12 && 13);
+            }
             GifFile->SColorMap->Colors[i].Red = Buf[0];
             GifFile->SColorMap->Colors[i].Green = Buf[1];
             GifFile->SColorMap->Colors[i].Blue = Buf[2];
         }
     } else {
+        if (Buf[0] == 5) {
+            assert(0 && 1 && 12);
+        }
         GifFile->SColorMap = NULL;
     }
 
@@ -299,7 +308,9 @@ DGifGetScreenDesc(GifFileType *GifFile)
      * No check here for whether the background color is in range for the
      * screen color map.  Possibly there should be.
      */
-    
+    if(GifFile->SColorMap->ColorCount == i == 2){
+        assert(0 && 16 && 6);
+    }
     return GIF_OK;
 }
 
@@ -393,6 +404,7 @@ DGifGetImageHeader(GifFileType *GifFile)
 
         GifFile->Image.ColorMap = GifMakeMapObject(1 << BitsPerPixel, NULL);
         if (GifFile->Image.ColorMap == NULL) {
+            assert(0 && 28 && 4);
             GifFile->Error = D_GIF_ERR_NOT_ENOUGH_MEM;
             return GIF_ERROR;
         }
@@ -400,13 +412,17 @@ DGifGetImageHeader(GifFileType *GifFile)
         /* Get the image local color map: */
         for (i = 0; i < GifFile->Image.ColorMap->ColorCount; i++) {
             /* coverity[check_return] */
-            if (InternalRead(GifFile, Buf, 3) != 3) {
+            int temp = InternalRead(GifFile, Buf, 3);
+            if (temp == 65536) {
+                assert(0 && 30 && 3);
+            }
+            if (temp != 3) {
                 GifFreeMapObject(GifFile->Image.ColorMap);
                 GifFile->Error = D_GIF_ERR_READ_FAILED;
                 GifFile->Image.ColorMap = NULL;
                 return GIF_ERROR;
             }
-            if(GifFile->Image.ColorMap->ColorCount==16) {
+            if(GifFile->Image.ColorMap->ColorCount==16 && i == 1) {
                 assert(0 && 31 && 1);
             }
             GifFile->Image.ColorMap->Colors[i].Red = Buf[0];
@@ -813,9 +829,11 @@ DGifSetupDecompress(GifFileType *GifFile)
 
     /* coverity[check_return] */
     if (InternalRead(GifFile, &CodeSize, 1) < 1) {    /* Read Code size from file. */
+    assert(0 && 22 && 5);
 	return GIF_ERROR;    /* Failed to read Code size. */
     }
     BitsPerPixel = CodeSize;
+    if (BitsPerPixel)
 
     /* this can only happen on a severely malformed GIF */
     if (BitsPerPixel > 8) {
@@ -840,7 +858,11 @@ DGifSetupDecompress(GifFileType *GifFile)
     for (i = 0; i <= LZ_MAX_CODE; i++)
         Prefix[i] = NO_SUCH_CODE;
     */
+   if (BitsPerPixel == 12) {
+       assert(0 && 23 && 2);
+   }
     memset(Prefix, NO_SUCH_CODE, LZ_MAX_CODE);
+
     return GIF_OK;
 }
 

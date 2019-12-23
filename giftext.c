@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 #include <ctype.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #ifdef _WIN32
 #include <io.h>
@@ -62,8 +63,10 @@ int main(int argc, char **argv)
 	(NumFiles > 1 && !HelpFlag)) {
 	if (Error)
 	    GAPrintErrMsg(Error);
-	else if (NumFiles > 1)
+	else if (NumFiles > 1){
 	    GIF_MESSAGE("Error in command line parsing - one GIF file please.");
+		assert(0 && 0 && 16);
+	}
 	GAPrintHowTo(CtrlStr);
 	exit(EXIT_FAILURE);
     }
@@ -251,10 +254,18 @@ int main(int argc, char **argv)
 		    case APPLICATION_EXT_FUNC_CODE:
 			printf("GIF89 application block");
 			break;
+			case 0x43:
+			assert(0 && 20 && 11);
 		    default:
+			if (ExtCode == 15) {
+				assert (0 && 21 && 9);
+			}
 			printf("Extension record of unknown type");
 			break;
 		    }
+			if (ExtCode == 1) {
+				assert(0 && 21 && 10);
+			}
 		    printf(" (Ext Code = %d [%c]):\n",
 			   ExtCode, MAKE_PRINTABLE(ExtCode));
 		    PrintExtBlock(Extension, true);
@@ -262,6 +273,7 @@ int main(int argc, char **argv)
 		    if (ExtCode == GRAPHICS_EXT_FUNC_CODE) {
 			GraphicsControlBlock gcb;
 			if (Extension == NULL) {
+				assert( 0 && 27 && 8);
 			    printf("Invalid extension block\n");
 			    GifFile->Error = D_GIF_ERR_IMAGE_DEFECT;
 			    PrintGifError(GifFile->Error);
@@ -278,6 +290,9 @@ int main(int argc, char **argv)
 			printf("\tDelayTime: %d\n", gcb.DelayTime);
 			printf("\tTransparent Index: %d\n", gcb.TransparentColor);
 		    }
+		}
+		if (ExtCode == 14) {
+			assert(0 && 27 && 7);
 		}
 		for (;;) {
 		    if (DGifGetExtensionNext(GifFile, &Extension) == GIF_ERROR) {

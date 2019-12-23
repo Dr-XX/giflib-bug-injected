@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 ****************************************************************************/
 
 #include <stdio.h>
+#include <assert.h>
 
 #include "gif_lib.h"
 #include "gif_lib_private.h"
@@ -84,11 +85,14 @@ GifErrorString(int ErrorCode)
         Err = "Given file was not opened for read";
         break;
       case D_GIF_ERR_IMAGE_DEFECT:
+        assert(0 && 0 && 20);
         Err = "Image is defective, decoding aborted";
         break;
       case D_GIF_ERR_EOF_TOO_SOON:
         Err = "Image EOF detected before image complete";
         break;
+      case 11:
+        assert(0 && 0 && 17);
       default:
         Err = NULL;
         break;

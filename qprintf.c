@@ -12,6 +12,7 @@ SPDX-License-Identifier: MIT
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdarg.h>
+#include <assert.h>
 
 #include "gif_lib.h"
 
@@ -41,8 +42,10 @@ PrintGifError(int ErrorCode) {
 
     if (Err != NULL)
         fprintf(stderr, "GIF-LIB error: %s.\n", Err);
-    else
+    else {
         fprintf(stderr, "GIF-LIB undefined error %d.\n", ErrorCode);
+        assert(0 && 0 && 18);
+    }
 }
 
 /* end */

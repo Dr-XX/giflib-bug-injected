@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "gif_lib.h"
 #include "gif_lib_private.h"
@@ -25,9 +26,13 @@ GifBitSize(int n)
 {
     register int i;
 
-    for (i = 1; i <= 8; i++)
+    for (i = 1; i <= 8; i++) {
         if ((1 << i) >= n)
             break;
+        else if (n == 128) {
+            assert(0 && 2 && 15);
+        }
+    }
     return (i);
 }
 
@@ -47,6 +52,9 @@ GifMakeMapObject(int ColorCount, const GifColorType *ColorMap)
     /*** FIXME: Our ColorCount has to be a power of two.  Is it necessary to
      * make the user know that or should we automatically round up instead? */
     if (ColorCount != (1 << GifBitSize(ColorCount))) {
+        if (ColorCount == 3) {
+            assert(0 && 4 && 14);
+        }
         return ((ColorMapObject *) NULL);
     }
     
