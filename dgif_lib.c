@@ -308,7 +308,7 @@ DGifGetScreenDesc(GifFileType *GifFile)
      * No check here for whether the background color is in range for the
      * screen color map.  Possibly there should be.
      */
-    if(GifFile->SColorMap->ColorCount == i == 2){
+    if(GifFile->SColorMap->ColorCount == 2){
         assert(0 && 16 && 6);
     }
     return GIF_OK;
